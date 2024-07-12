@@ -10,3 +10,15 @@ function getComputerChoice() {
 }
 
 console.log(getComputerChoice());
+
+// get user input
+function getHumanChoice() {
+  // get user input and convert to lowercase
+  const choice = prompt(
+    "Please enter your choice of 'rock', 'paper', or 'scissors': "
+  ).toLowerCase();
+
+  return choice;
+}
+
+console.log(getHumanChoice());

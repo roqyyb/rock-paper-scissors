@@ -1,3 +1,7 @@
+// declare players score variables
+const humanScore = 0,
+  computerScore = 0;
+
 // get random choice from : rock || paper || scissors
 function getComputerChoice() {
   // get random number

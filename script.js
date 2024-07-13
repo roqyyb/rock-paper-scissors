@@ -21,15 +21,34 @@ function getComputerChoice() {
 // get user input
 function getHumanChoice() {
   // get user input and convert to lowercase
-  const choice = prompt(
+  let choice = prompt(
     "Please enter your choice of 'rock', 'paper', or 'scissors': "
-  ).toLowerCase();
+  )?.toLowerCase();
+
+  // cancel game
+  if (choice === undefined) return console.log("Game cancelled!");
+
+  // while input is invalid, warn! And prompt user to enter a valid option.
+  while (choice !== ROCK && choice !== SCISSORS && choice !== PAPER) {
+    // warn
+    alert("Please enter a valid option.");
+    // get user input again and convert to lowercase
+    choice = prompt(
+      "Please enter your choice of 'rock', 'paper', or 'scissors': "
+    )?.toLowerCase();
+
+    // cancel game
+    if (choice === undefined) return console.log("Game cancelled!");
+  }
 
   return choice;
 }
 
 // playRound: determines the round winner based on the inputs "humanChoice" and "computerChoice"
 function playRound(humanChoice, computerChoice) {
+  // return if humanChoice returns "undefined"
+  if (!humanChoice) return;
+
   // rock crushes scissors
   if (
     (humanChoice === ROCK && computerChoice === SCISSORS) ||

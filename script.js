@@ -14,7 +14,7 @@ function getComputerChoice() {
 
   // setting choice based on "randomNumber"
   const choice =
-    randomNumber === 1 ? "rock" : randomNumber === 2 ? "paper" : "scissors";
+    randomNumber === 1 ? ROCK : randomNumber === 2 ? PAPER : SCISSORS;
   return choice;
 }
 

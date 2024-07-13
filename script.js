@@ -46,6 +46,10 @@ function getHumanChoice() {
 
 // playRound: determines the round winner based on the inputs "humanChoice" and "computerChoice"
 function playRound(humanChoice, computerChoice) {
+  // players round score
+  let humanRoundScore = 0,
+    computerRoundScore = 0;
+
   // return if humanChoice returns "undefined"
   if (!humanChoice) return;
 
@@ -55,7 +59,7 @@ function playRound(humanChoice, computerChoice) {
     (humanChoice === SCISSORS && computerChoice === ROCK)
   ) {
     // increment winner's score
-    humanChoice === ROCK ? (humanScore += 1) : (computerScore += 1);
+    humanChoice === ROCK ? (humanRoundScore += 1) : (computerRoundScore += 1);
   }
   // paper wraps rock
   else if (
@@ -63,7 +67,7 @@ function playRound(humanChoice, computerChoice) {
     (humanChoice === PAPER && computerChoice === ROCK)
   ) {
     // increment winner's score
-    humanChoice === PAPER ? (humanScore += 1) : (computerScore += 1);
+    humanChoice === PAPER ? (humanRoundScore += 1) : (computerRoundScore += 1);
   }
   // Scissors cuts paper
   else if (
@@ -71,15 +75,21 @@ function playRound(humanChoice, computerChoice) {
     (humanChoice === SCISSORS && computerChoice === PAPER)
   ) {
     // increment winner's score
-    humanChoice === SCISSORS ? (humanScore += 1) : (computerScore += 1);
+    humanChoice === SCISSORS
+      ? (humanRoundScore += 1)
+      : (computerRoundScore += 1);
   } else {
     return console.log("Draw!!!");
   }
 
-  if (humanScore > computerScore) {
+  if (humanRoundScore > computerRoundScore) {
     return console.log(`You win! ${humanChoice} beats ${computerChoice}.`);
+    // inc human global/game score
+    humanScore += 1;
   } else {
     return console.log(`You lose! ${computerChoice} beats ${humanChoice}.`);
+    // inc computer global/game score
+    computerScore += 1;
   }
 }
 
@@ -89,3 +99,5 @@ const humanSelection = getHumanChoice();
 
 // call playRound with players selections
 playRound(humanSelection, computerSelection);
+
+function playGame() {}

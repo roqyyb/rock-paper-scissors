@@ -1,3 +1,8 @@
+// declare constants
+const ROCK = "rock",
+  PAPER = "paper",
+  SCISSORS = "scissors";
+
 // declare players score variables
 const humanScore = 0,
   computerScore = 0;

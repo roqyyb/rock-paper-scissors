@@ -83,21 +83,39 @@ function playRound(humanChoice, computerChoice) {
   }
 
   if (humanRoundScore > computerRoundScore) {
-    return console.log(`You win! ${humanChoice} beats ${computerChoice}.`);
     // inc human global/game score
     humanScore += 1;
+    return console.log(`You win! ${humanChoice} beats ${computerChoice}.`);
   } else {
-    return console.log(`You lose! ${computerChoice} beats ${humanChoice}.`);
     // inc computer global/game score
     computerScore += 1;
+    return console.log(`You lose! ${computerChoice} beats ${humanChoice}.`);
   }
 }
 
-// players selections
-const computerSelection = getComputerChoice();
-const humanSelection = getHumanChoice();
+// playGame
+function playGame() {
+  let i = 0;
 
-// call playRound with players selections
-playRound(humanSelection, computerSelection);
+  while (i < 5) {
+    console.log(`Round ${i + 1} :`);
 
-function playGame() {}
+    // players selections
+    const computerSelection = getComputerChoice();
+    const humanSelection = getHumanChoice();
+
+    // if human selection is invalid, stop game.
+    if (!humanSelection) return;
+
+    // call playRound with players selections
+    playRound(humanSelection, computerSelection);
+    console.log(" ");
+
+    ++i;
+  }
+
+  console.log(`computer: ${computerScore} ||  human: ${humanScore}`);
+}
+
+// play game:
+playGame();

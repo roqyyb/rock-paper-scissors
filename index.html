@@ -3,16 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="script.js"></script>
     <title>Rock-Paper-Scissors || TOP</title>
   </head>
   <body>
     <div id="container">
       <div id="display">
         <div class="score-board">
-          <span id="human">human:</span>
-          <span id="robot">robot:</span>
+          <div id="human">human: <span id="human-score">0</span></div>
+          <div id="robot">robot: <span id="robot-score">0</span></div>
         </div>
+      </div>
+      <div id="message">
+        Welcome to <span id="game-name">Rock-Paper-Scissors</span> game. Click
+        on one of the options below to start playing.
       </div>
       <div class="buttons">
         <button id="rock">rock</button>

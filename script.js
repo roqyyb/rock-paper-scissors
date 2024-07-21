@@ -1,3 +1,5 @@
+let gameActive = true;
+
 // declare constants
 const ROCK = "rock",
   PAPER = "paper",
@@ -5,117 +7,149 @@ const ROCK = "rock",
 
 // declare players score variables
 let humanScore = 0,
-  computerScore = 0;
+  robotScore = 0;
+
+let humanScoreElem = document.querySelector("#human-score");
+let robotScoreElem = document.querySelector("#robot-score");
+
+let messageElem = document.querySelector("#message");
+
+function updateUI() {
+  humanScoreElem.textContent = humanScore;
+  robotScoreElem.textContent = robotScore;
+
+  if (humanScore > robotScore) {
+    robotScoreElem.style.color = "red";
+    humanScoreElem.style.color = "green";
+  } else if (humanScore < robotScore) {
+    robotScoreElem.style.color = "green";
+    humanScoreElem.style.color = "red";
+  } else {
+    humanScoreElem.style.color = "black";
+    robotScoreElem.style.color = "black";
+  }
+}
+
+function getWinner(humanScore, robotScore) {
+  const winner = humanScore === 5 ? "human" : robotScore === 5 ? "robot" : "";
+  return winner;
+}
 
 // get random choice from : rock || paper || scissors
-function getComputerChoice() {
+function getRobotChoice() {
   // get random number
   const randomNumber = Math.floor(Math.random() * 3) + 1;
 
   // setting choice based on "randomNumber"
   const choice =
     randomNumber === 1 ? ROCK : randomNumber === 2 ? PAPER : SCISSORS;
+
+  console.log("robot choice", choice);
   return choice;
 }
 
-// get user input
-function getHumanChoice() {
-  // get user input and convert to lowercase
-  let choice = prompt(
-    "Please enter your choice of 'rock', 'paper', or 'scissors': "
-  )?.toLowerCase();
+const gameButtons = document.querySelector(".buttons");
 
-  // cancel game
-  if (choice === undefined) return console.log("Game cancelled!");
+gameButtons.addEventListener("click", (e) => {
+  const target = e.target;
 
-  // while input is invalid, warn! And prompt user to enter a valid option.
-  while (choice !== ROCK && choice !== SCISSORS && choice !== PAPER) {
-    // warn
-    alert("Please enter a valid option.");
-    // get user input again and convert to lowercase
-    choice = prompt(
-      "Please enter your choice of 'rock', 'paper', or 'scissors': "
-    )?.toLowerCase();
+  if (!gameActive) return;
 
-    // cancel game
-    if (choice === undefined) return console.log("Game cancelled!");
+  let humanChoice = "";
+
+  switch (target.id) {
+    case ROCK:
+      humanChoice = ROCK;
+      break;
+
+    case PAPER:
+      humanChoice = PAPER;
+      break;
+
+    case SCISSORS:
+      humanChoice = SCISSORS;
+      break;
   }
+  const robotChoice = getRobotChoice();
+  playRound(humanChoice, robotChoice);
+});
 
-  return choice;
-}
-
-// playRound: determines the round winner based on the inputs "humanChoice" and "computerChoice"
-function playRound(humanChoice, computerChoice) {
+function playRound(humanChoice, robotChoice) {
   // players round score
   let humanRoundScore = 0,
-    computerRoundScore = 0;
+    robotRoundScore = 0;
 
   // return if humanChoice returns "undefined"
   if (!humanChoice) return;
 
   // rock crushes scissors
   if (
-    (humanChoice === ROCK && computerChoice === SCISSORS) ||
-    (humanChoice === SCISSORS && computerChoice === ROCK)
+    (humanChoice === ROCK && robotChoice === SCISSORS) ||
+    (humanChoice === SCISSORS && robotChoice === ROCK)
   ) {
     // increment winner's score
-    humanChoice === ROCK ? (humanRoundScore += 1) : (computerRoundScore += 1);
+    humanChoice === ROCK ? (humanRoundScore += 1) : (robotRoundScore += 1);
   }
   // paper wraps rock
   else if (
-    (humanChoice === ROCK && computerChoice === PAPER) ||
-    (humanChoice === PAPER && computerChoice === ROCK)
+    (humanChoice === ROCK && robotChoice === PAPER) ||
+    (humanChoice === PAPER && robotChoice === ROCK)
   ) {
     // increment winner's score
-    humanChoice === PAPER ? (humanRoundScore += 1) : (computerRoundScore += 1);
+    humanChoice === PAPER ? (humanRoundScore += 1) : (robotRoundScore += 1);
   }
   // Scissors cuts paper
   else if (
-    (humanChoice === PAPER && computerChoice === SCISSORS) ||
-    (humanChoice === SCISSORS && computerChoice === PAPER)
+    (humanChoice === PAPER && robotChoice === SCISSORS) ||
+    (humanChoice === SCISSORS && robotChoice === PAPER)
   ) {
     // increment winner's score
-    humanChoice === SCISSORS
-      ? (humanRoundScore += 1)
-      : (computerRoundScore += 1);
+    humanChoice === SCISSORS ? (humanRoundScore += 1) : (robotRoundScore += 1);
   } else {
-    return console.log("Draw!!!");
+    messageElem.textContent = "Draw!!!";
   }
 
-  if (humanRoundScore > computerRoundScore) {
+  if (humanRoundScore > robotRoundScore) {
     // inc human global/game score
     humanScore += 1;
-    return console.log(`You win! ${humanChoice} beats ${computerChoice}.`);
+
+    messageElem.textContent = `You win! ${humanChoice} beats ${robotChoice}.`;
   } else {
-    // inc computer global/game score
-    computerScore += 1;
-    return console.log(`You lose! ${computerChoice} beats ${humanChoice}.`);
+    // inc robot global/game score
+    robotScore += 1;
+
+    messageElem.textContent = `You lose! ${robotChoice} beats ${humanChoice}.`;
+  }
+
+  updateUI();
+  const winner = getWinner(humanScore, robotScore);
+
+  if (winner) {
+    if (winner === "human") {
+      messageElem.textContent = "Hooray! You won!!!";
+      messageElem.style.color = "green";
+    } else {
+      messageElem.textContent = "Oop! You lose. Try again.";
+      messageElem.style.color = "red";
+    }
+    // remove game buttons
+    while (gameButtons.firstChild) {
+      gameButtons.removeChild(gameButtons.firstChild);
+    }
+    // add new game button
+    const newGameBtn = document.createElement("button");
+    newGameBtn.textContent = "new game";
+    gameButtons.appendChild(newGameBtn);
+    newGameBtn.addEventListener("click", () => reset());
+    // stop game
+    gameActive = false;
   }
 }
 
-// playGame
-function playGame() {
-  let i = 0;
-
-  while (i < 5) {
-    console.log(`Round ${i + 1} :`);
-
-    // players selections
-    const computerSelection = getComputerChoice();
-    const humanSelection = getHumanChoice();
-
-    // if human selection is invalid, stop game.
-    if (!humanSelection) return;
-
-    // call playRound with players selections
-    playRound(humanSelection, computerSelection);
-    console.log(" ");
-
-    ++i;
-  }
-
-  console.log(`computer: ${computerScore} ||  human: ${humanScore}`);
+function reset() {
+  // humanScore = 0;
+  // robotScore = 0;
+  // winner = "";
+  // gameActive = false;
+  location.reload();
 }
-
-// play game:
-playGame();

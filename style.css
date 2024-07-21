@@ -2,6 +2,44 @@
   width: 50%;
   margin: 0 auto;
   padding: 10px;
-  border: 1px solid #ccc;
-  background-color: red;
+  border: 1px solid black;
+  max-width: 500px;
+  border-radius: 8px;
+}
+
+#display {
+  margin-bottom: 2rem;
+}
+
+#display .score-board {
+  display: flex;
+  justify-content: space-between;
+  width: 140px;
+  margin: 0 auto;
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 4px;
+}
+.score-board div {
+  text-transform: capitalize;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+#human-score,
+#robot-score {
+  font-weight: bold;
+}
+#message {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+#game-name {
+  font-weight: bold;
 }
